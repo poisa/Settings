@@ -1,0 +1,14 @@
+language: php
+
+php:
+  - '7.0'
+  - '7.1'
+  - '7.2'
+
+script:
+  - composer validate
+  - composer install --prefer-source --no-interaction
+  - vendor/bin/phpunit --no-coverage
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

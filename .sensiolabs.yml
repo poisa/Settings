@@ -1,0 +1,5 @@
+rules:
+
+  # This prevents the [Interfaces names should end with "Interface"] warning.
+  php.interface_has_no_interface_suffix:
+    enabled: false

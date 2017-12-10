@@ -1,0 +1,4 @@
+# PHPUnit's code coverage report
+coverage/
+
+vendor/
