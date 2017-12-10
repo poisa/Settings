@@ -1,0 +1,41 @@
+{
+    "name": "poisa/settings",
+    "description": "A Laravel multi-tenant database configuration/settings manager",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Julian Vidal",
+            "email": "julian@julianvidal.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Poisa\\Settings\\SettingsServiceProvider"
+            ],
+            "aliases": {
+                "Debugbar": "Poisa\\Settings\\Facades\\Settings"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Poisa\\Settings\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poisa\\Settings\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "6.5.x-dev",
+        "orchestra/testbench": "3.5.x-dev",
+        "limedeck/phpunit-detailed-printer": "dev-master"
+    }
+}
