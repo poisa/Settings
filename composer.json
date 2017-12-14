@@ -19,7 +19,7 @@
                 "Poisa\\Settings\\SettingsServiceProvider"
             ],
             "aliases": {
-                "Debugbar": "Poisa\\Settings\\Facades\\Settings"
+                "Settings": "Poisa\\Settings\\Facades\\Settings"
             }
         }
     },
