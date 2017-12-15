@@ -36,6 +36,7 @@ class SettingsTest extends TestCase
      * @covers ::setKey
      * @covers ::getSystemKey
      * @covers ::setSystemKey
+     * @covers \Poisa\Settings\Facades\Settings::getFacadeAccessor
      * @param bool $shouldEncrypt
      * @param      $insertValue
      * @param      $updateValue

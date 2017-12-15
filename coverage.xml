@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1513315495">
-  <project timestamp="1513315495">
+<coverage generated="1513378488">
+  <project timestamp="1513378488">
     <package name="Poisa\Settings\Events">
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Events/SettingCreated.php">
         <class name="Poisa\Settings\Events\SettingCreated" namespace="Poisa\Settings\Events">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
         </class>
-        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
       </file>
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Events/SettingRead.php">
         <class name="Poisa\Settings\Events\SettingRead" namespace="Poisa\Settings\Events">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
         </class>
-        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
       </file>
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Events/SettingUpdated.php">
         <class name="Poisa\Settings\Events\SettingUpdated" namespace="Poisa\Settings\Events">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
         </class>
-        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="0" elements="4" coveredelements="0"/>
+        <line num="35" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <metrics loc="41" ncloc="24" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
       </file>
     </package>
     <package name="Poisa\Settings\Exceptions">
@@ -68,11 +68,11 @@
     <package name="Poisa\Settings\Facades">
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Facades/Settings.php">
         <class name="Poisa\Settings\Facades\Settings" namespace="Poisa\Settings\Facades">
-          <metrics complexity="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
         </class>
-        <line num="9" type="method" name="getFacadeAccessor" visibility="protected" complexity="1" crap="2" count="0"/>
-        <line num="11" type="stmt" count="0"/>
-        <metrics loc="13" ncloc="13" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
+        <line num="9" type="method" name="getFacadeAccessor" visibility="protected" complexity="1" crap="1" count="12"/>
+        <line num="11" type="stmt" count="12"/>
+        <metrics loc="13" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
       </file>
     </package>
     <package name="Poisa\Settings\Models">
@@ -276,6 +276,6 @@
         <metrics loc="37" ncloc="27" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="0" elements="10" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="21" loc="656" ncloc="493" classes="10" methods="30" coveredmethods="24" conditionals="0" coveredconditionals="0" statements="110" coveredstatements="92" elements="140" coveredelements="116"/>
+    <metrics files="21" loc="656" ncloc="493" classes="10" methods="30" coveredmethods="28" conditionals="0" coveredconditionals="0" statements="110" coveredstatements="102" elements="140" coveredelements="130"/>
   </project>
 </coverage>
