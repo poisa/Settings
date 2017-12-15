@@ -2,17 +2,34 @@
 
 namespace Poisa\Settings\Tests;
 
-use Poisa\Settings\Serializers\Serializer;
+use Poisa\Settings\Events\SettingCreated;
+use Poisa\Settings\Events\SettingRead;
+use Poisa\Settings\Events\SettingUpdated;
+use Poisa\Settings\Models\Settings as SettingsModel;
 use Poisa\Settings\Tests\Serializers\FooSerializer;
 use Illuminate\Support\Str;
 use Settings;
 use DB;
+use Illuminate\Support\Facades\Event;
 
 /**
  * @coversDefaultClass \Poisa\Settings\Settings
  */
 class SettingsTest extends TestCase
 {
+    /**
+     * @covers ::getConfiguredModel
+     */
+    public function testGetConfiguredModel()
+    {
+        $connection = 'system';
+        $table = config('settings.table_name');
+        $model = Settings::getConfiguredModel($connection);
+        $this->assertInstanceOf(SettingsModel::class, $model);
+        $this->assertEquals($connection, $model->getConnectionName());
+        $this->assertEquals($table, $model->getTable());
+    }
+
     /**
      * @dataProvider knownTypesProvider
      * @covers ::getKey
@@ -57,6 +74,9 @@ class SettingsTest extends TestCase
         $this->assertSame($updateValue, Settings::getTenantKey($key));
     }
 
+    /**
+     * @covers ::getKey
+     */
     public function testGetKeyReturnsNull()
     {
         config(['settings.exception_if_key_not_found' => false]);
@@ -64,6 +84,7 @@ class SettingsTest extends TestCase
     }
 
     /**
+     * @covers ::getKey
      * @expectedException \Poisa\Settings\Exceptions\KeyNotFoundException
      */
     public function testGetKeyThrowsException()
@@ -138,6 +159,148 @@ class SettingsTest extends TestCase
         $serializers = Settings::getSerializers();
         $this->assertInternalType('array', $serializers);
         $this->assertCount(count(config('settings.serializers')), $serializers);
+    }
+
+    /**
+     * @covers ::hasKey
+     */
+    public function testHasKeyReturnsFalse()
+    {
+        $this->assertFalse(Settings::hasKey('foo', 'system'));
+    }
+
+    /**
+     * @covers ::hasKey
+     */
+    public function testHasKeyReturnsTrue()
+    {
+        Settings::setKey('foo', 'bar', 'system');
+        $this->assertTrue(Settings::hasKey('foo', 'system'));
+    }
+
+    /**
+     * @covers ::createKey
+     */
+    public function testCreateKeyReturnsTrueWithEncryption()
+    {
+        config(['settings.encrypt_known_types' => true]);
+        $key = 'foo';
+        $value = 'bar';
+        Settings::createKey($key, $value, 'system');
+
+        $row = DB::connection('system')
+            ->table(config('settings.table_name'))
+            ->where('key', $key)
+            ->first();
+
+        $this->assertNotEmpty($row->value);
+    }
+
+    /**
+     * @covers ::createKey
+     */
+    public function testCreateKeyReturnsTrueWithoutEncryption()
+    {
+        config(['settings.encrypt_known_types' => false]);
+        $key = 'foo';
+        $value = 'bar';
+        Settings::createKey($key, $value, 'system');
+
+        $row = DB::connection('system')
+            ->table(config('settings.table_name'))
+            ->where('key', $key)
+            ->first();
+
+        $this->assertNotEmpty($row->value);
+    }
+
+    /**
+     * @covers ::updateKey
+     */
+    public function testUpdateKeyReturnsTrueWithEncryption()
+    {
+        config(['settings.encrypt_known_types' => true]);
+        Settings::createKey('foo', 'original value', 'system');
+        Settings::updateKey('foo', 'updated value', 'system');
+
+        $this->assertEquals('updated value', Settings::getKey('foo', 'system'));
+    }
+
+    /**
+     * @covers ::updateKey
+     */
+    public function testUpdateKeyReturnsTrueWithoutEncryption()
+    {
+        config(['settings.encrypt_known_types' => false]);
+        Settings::createKey('foo', 'original value', 'system');
+        Settings::updateKey('foo', 'updated value', 'system');
+
+        $this->assertEquals('updated value', Settings::getKey('foo', 'system'));
+    }
+
+    /**
+     * @covers ::createKey
+     */
+    public function testEventSettingCreatedIsDispatched()
+    {
+        Event::fake();
+
+        $key = 'foo';
+        $value = 'bar';
+        $connection = 'system';
+
+        Settings::setKey($key, $value, $connection);
+
+        Event::assertDispatched(SettingCreated::class, function($e) use ($key, $value, $connection) {
+            return $e->key == $key
+                && $e->value == $value
+                && $e->connection == $connection
+                && $e instanceof SettingCreated;
+        });
+    }
+
+    /**
+     * @covers ::createKey
+     */
+    public function testEventSettingUpdatedIsDispatched()
+    {
+        Event::fake();
+
+        $key = 'foo';
+        $value = 'bar';
+        $connection = 'system';
+
+        Settings::setKey($key, $value, $connection); // create
+        Settings::setKey($key, $value, $connection); // update
+
+        Event::assertDispatched(SettingUpdated::class, function($e) use ($key, $value, $connection) {
+            return $e->key == $key
+                && $e->value == $value
+                && $e->connection == $connection
+                && $e instanceof SettingUpdated;
+        });
+    }
+
+    /**
+     * @covers ::createKey
+     */
+    public function testEventSettingReadIsDispatched()
+    {
+        Event::fake();
+
+        $key = 'foo';
+        $value = 'bar';
+        $connection = 'system';
+
+        Settings::setKey($key, $value, $connection); // create
+        Settings::getKey($key, $connection); // read
+
+        Event::assertDispatched(SettingRead::class, function($e) use ($key, $value, $connection) {
+            return $e->key == $key
+                && $e->value == $value
+                && $e->connection == $connection
+                && $e instanceof SettingRead;
+        });
     }
 
     public function knownTypesProvider()

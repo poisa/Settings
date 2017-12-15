@@ -13,70 +13,102 @@ use Poisa\Settings\Serializers\SerializerFactory;
 
 class Settings
 {
+    /**
+     * Shortcut for getKey using the system connection.
+     * @param string $key
+     * @return null
+     */
     public function getSystemKey(string $key)
     {
         return $this->getKey($key, 'system');
     }
 
+    /**
+     * Shortcut for getKey using the tenant connection.
+     * @param string $key
+     * @return null
+     */
     public function getTenantKey(string $key)
     {
         return $this->getKey($key, 'tenant');
     }
 
+    /**
+     * Shortcut for setKey using the system connection.
+     * @param string $key
+     * @param        $value
+     * @return bool
+     */
     public function setSystemKey(string $key, $value): bool
     {
         return $this->setKey($key, $value, 'system');
     }
 
+    /**
+     * Shortcut for getKey using the tenant connection.
+     * @param string $key
+     * @param        $value
+     * @return bool
+     */
     public function setTenantKey(string $key, $value): bool
     {
         return $this->setKey($key, $value, 'tenant');
     }
 
+    /**
+     * Sets a key using a connection. If the key doesn't exist, it will create it.
+     * @param string $key
+     * @param        $value
+     * @param string $connection
+     * @return bool
+     */
     public function setKey(string $key, $value, string $connection): bool
     {
-        $serializable = SerializerFactory::createFromValue($value);
+        if ($this->hasKey($key, $connection)) {
+            return $this->updateKey($key, $value, $connection);
+        }
+        return $this->createKey($key, $value, $connection);
+    }
 
-        $connection = config("settings.{$connection}_connection");
-        $table = config('settings.table_name');
-
-        $data = (new SettingsModel)
-            ->setConnection($connection)
-            ->setTable($table)
+    /**
+     * Checks whether a key exists or not using a connection.
+     * @param string $key
+     * @param string $connection
+     * @return bool
+     */
+    public function hasKey(string $key, string $connection): bool
+    {
+        $data = $this->getConfiguredModel($connection)
             ->where('key', $key)
             ->first();
 
-        // Update key
-        if (!is_null($data)) {
-            // This setTable() must be set here even if already set above.
-            // @see https://github.com/laravel/framework/issues/2318
-            $data->setTable($table);
-
-            if ($serializable->shouldEncryptData()) {
-                $data->value = encrypt($serializable->serialize($value));
-            } else {
-                $data->value = $serializable->serialize($value);
-            }
-
-            $success = $data->save();
-
-            if ($success) {
-                event(new SettingUpdated($key, $value, $connection));
-            }
-
-            return $success;
+        if (is_null($data)) {
+            return false;
         }
 
-        // Create key
-        $model = (new SettingsModel)
-            ->setConnection($connection)
-            ->setTable($table);
+        return true;
+    }
+
+    /**
+     * Creates a key using a connection. Assumes the key doesn't already exist.
+     * @param string $key
+     * @param        $value
+     * @param string $connection
+     * @return bool
+     */
+    public function createKey(string $key, $value, string $connection): bool
+    {
+        $serializable = SerializerFactory::createFromValue($value);
+
+        $model = $this->getConfiguredModel($connection);
         $model->key = $key;
+
         if ($serializable->shouldEncryptData()) {
             $model->value = encrypt($serializable->serialize($value));
         } else {
             $model->value = $serializable->serialize($value);
         }
+
         $model->type_alias = $serializable->getTypeAlias();
         $success = $model->save();
 
@@ -87,11 +119,46 @@ class Settings
         return $success;
     }
 
+    /**
+     * Updates a key using a connection. Assumes the key already exists.
+     * @param string $key
+     * @param        $value
+     * @param string $connection
+     * @return bool
+     */
+    public function updateKey(string $key, $value, string $connection): bool
+    {
+        $serializable = SerializerFactory::createFromValue($value);
+
+        $model = $this->getConfiguredModel($connection);
+        $data = $model->where('key', $key)->first();
+
+        $data->setTable(config('settings.table_name'));
+
+        if ($serializable->shouldEncryptData()) {
+            $data->value = encrypt($serializable->serialize($value));
+        } else {
+            $data->value = $serializable->serialize($value);
+        }
+
+        $success = $data->save();
+
+        if ($success) {
+            event(new SettingUpdated($key, $value, $connection));
+        }
+
+        return $success;
+    }
+
+    /**
+     * Get a key from a connection.
+     * @param string $key
+     * @param string $connection
+     * @return null
+     */
     public function getKey(string $key, string $connection)
     {
-        $model = new SettingsModel;
-        $model->setConnection(config("settings.{$connection}_connection"));
-        $model->setTable(config('settings.table_name'));
+        $model = $this->getConfiguredModel($connection);
         $data = $model->where('key', $key)->first();
 
         if (is_null($data)) {
@@ -115,7 +182,7 @@ class Settings
     }
 
     /**
-     * Add a new serizlizer to the available serializers
+     * Add a new serizlizer to the available serializers.
      * @param string $serializer Serializer's FQCN
      */
     public function pushSerializer(string $serializer)
@@ -125,8 +192,25 @@ class Settings
         config(['settings.serializers' => $serializers]);
     }
 
-    public function getSerializers():array
+    /**
+     * Return an array with all the currently available serializers.
+     * @return array
+     */
+    public function getSerializers(): array
     {
         return config('settings.serializers');
+    }
+
+    /**
+     * Get a fully configured Settings model.
+     * @param string $connection
+     * @return SettingsModel
+     */
+    public function getConfiguredModel(string $connection): SettingsModel
+    {
+        $model = new SettingsModel;
+        $model->setConnection(config("settings.{$connection}_connection"));
+        $model->setTable(config('settings.table_name'));
+        return $model;
     }
 }
