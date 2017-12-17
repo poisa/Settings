@@ -6,6 +6,8 @@ php:
   - '7.2'
 
 script:
+  # Disable Xdebug
+  - phpenv config-rm xdebug.ini
   - composer validate
   - composer install --prefer-source --no-interaction
   - vendor/bin/phpunit --no-coverage
