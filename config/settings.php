@@ -8,6 +8,8 @@ return [
     |
     | The name of the database connection for the system settings.
     | You can find this in config/database.php under the "connections" key.
+    | NOTE: If you are NOT using a multi-tenant system this will be the
+    | default connection the package will use if you don't specify one.
     |
     */
     'system_connection' => 'system',
@@ -72,8 +74,8 @@ return [
     |
     | This is where you register all the classes that will be used to serialize
     | data. There are no built-in serializers but some come registered by default.
-    | These are that the documentation refers to as "known types" (because the
-    | package already "knows" how to serialize them from the factory).
+    | These are what the documentation refers to as "known types" (because the
+    | package already "knows" how to serialize them if you don't change the defaults).
     |
     */
     'serializers' => [

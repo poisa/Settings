@@ -18,13 +18,27 @@ use Illuminate\Support\Facades\Event;
 class SettingsTest extends TestCase
 {
     /**
+     * @covers ::getDefaultConnection
+     */
+    public function testGetDefaultConnection()
+    {
+        $this->assertEquals(config('settings.system_connection'), Settings::getDefaultConnection());
+    }
+
+    /**
      * @covers ::getConfiguredModel
      */
     public function testGetConfiguredModel()
     {
-        $connection = 'system';
+        $connection = Settings::getDefaultConnection();
         $table = config('settings.table_name');
+
         $model = Settings::getConfiguredModel($connection);
+        $this->assertInstanceOf(SettingsModel::class, $model);
+        $this->assertEquals($connection, $model->getConnectionName());
+        $this->assertEquals($table, $model->getTable());
+
+        $model = Settings::getConfiguredModel();
         $this->assertInstanceOf(SettingsModel::class, $model);
         $this->assertEquals($connection, $model->getConnectionName());
         $this->assertEquals($table, $model->getTable());
@@ -37,6 +51,8 @@ class SettingsTest extends TestCase
      * @covers ::getSystemKey
      * @covers ::setSystemKey
      * @covers \Poisa\Settings\Facades\Settings::getFacadeAccessor
+     * @covers \Poisa\Settings\SettingsServiceProvider::boot
+     * @covers \Poisa\Settings\SettingsServiceProvider::register
      * @param bool $shouldEncrypt
      * @param      $insertValue
      * @param      $updateValue
@@ -51,6 +67,29 @@ class SettingsTest extends TestCase
         // Update an existing key
         $this->assertTrue(Settings::setSystemKey($key, $updateValue));
         $this->assertSame($updateValue, Settings::getSystemKey($key));
+    }
+
+    /**
+     * @dataProvider knownTypesProvider
+     * @covers ::getKey
+     * @covers ::setKey
+     * @covers ::getSystemKey
+     * @covers ::setSystemKey
+     * @covers \Poisa\Settings\Facades\Settings::getFacadeAccessor
+     * @param bool $shouldEncrypt
+     * @param      $insertValue
+     * @param      $updateValue
+     */
+    public function testDefaultGetterSetter(bool $shouldEncrypt, $insertValue, $updateValue)
+    {
+        config(['settings.encrypt_known_types' => $shouldEncrypt]);
+        $key = Str::random(10);
+        $this->assertTrue(Settings::setKey($key, $insertValue));
+        $this->assertSame($insertValue, Settings::getKey($key));
+
+        // Update an existing key
+        $this->assertTrue(Settings::setKey($key, $updateValue));
+        $this->assertSame($updateValue, Settings::getKey($key));
     }
 
     /**
@@ -168,6 +207,7 @@ class SettingsTest extends TestCase
     public function testHasKeyReturnsFalse()
     {
         $this->assertFalse(Settings::hasKey('foo', 'system'));
+        $this->assertFalse(Settings::hasKey('foo'));
     }
 
     /**
@@ -177,6 +217,7 @@ class SettingsTest extends TestCase
     {
         Settings::setKey('foo', 'bar', 'system');
         $this->assertTrue(Settings::hasKey('foo', 'system'));
+        $this->assertTrue(Settings::hasKey('foo'));
     }
 
     /**
@@ -187,7 +228,7 @@ class SettingsTest extends TestCase
         config(['settings.encrypt_known_types' => true]);
         $key = 'foo';
         $value = 'bar';
-        Settings::createKey($key, $value, 'system');
+        Settings::createKey($key, $value);
 
         $row = DB::connection('system')
             ->table(config('settings.table_name'))
@@ -205,7 +246,7 @@ class SettingsTest extends TestCase
         config(['settings.encrypt_known_types' => false]);
         $key = 'foo';
         $value = 'bar';
-        Settings::createKey($key, $value, 'system');
+        Settings::createKey($key, $value);
 
         $row = DB::connection('system')
             ->table(config('settings.table_name'))
@@ -221,10 +262,10 @@ class SettingsTest extends TestCase
     public function testUpdateKeyReturnsTrueWithEncryption()
     {
         config(['settings.encrypt_known_types' => true]);
-        Settings::createKey('foo', 'original value', 'system');
-        Settings::updateKey('foo', 'updated value', 'system');
+        Settings::createKey('foo', 'original value');
+        Settings::updateKey('foo', 'updated value');
 
-        $this->assertEquals('updated value', Settings::getKey('foo', 'system'));
+        $this->assertEquals('updated value', Settings::getKey('foo'));
     }
 
     /**
@@ -233,10 +274,10 @@ class SettingsTest extends TestCase
     public function testUpdateKeyReturnsTrueWithoutEncryption()
     {
         config(['settings.encrypt_known_types' => false]);
-        Settings::createKey('foo', 'original value', 'system');
-        Settings::updateKey('foo', 'updated value', 'system');
+        Settings::createKey('foo', 'original value');
+        Settings::updateKey('foo', 'updated value');
 
-        $this->assertEquals('updated value', Settings::getKey('foo', 'system'));
+        $this->assertEquals('updated value', Settings::getKey('foo'));
     }
 
     /**

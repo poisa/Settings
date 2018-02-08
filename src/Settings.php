@@ -62,22 +62,34 @@ class Settings
      * @param string $connection
      * @return bool
      */
-    public function setKey(string $key, $value, string $connection): bool
+    public function setKey(string $key, $value, $connection = null): bool
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         if ($this->hasKey($key, $connection)) {
             return $this->updateKey($key, $value, $connection);
         }
         return $this->createKey($key, $value, $connection);
     }
 
+    public function getDefaultConnection(): string
+    {
+        return config('settings.system_connection');
+    }
     /**
      * Checks whether a key exists or not using a connection.
      * @param string $key
      * @param string $connection
      * @return bool
      */
-    public function hasKey(string $key, string $connection): bool
+    public function hasKey(string $key, $connection = null): bool
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         $data = $this->getConfiguredModel($connection)
             ->where('key', $key)
             ->first();
@@ -96,8 +108,12 @@ class Settings
      * @param string $connection
      * @return bool
      */
-    public function createKey(string $key, $value, string $connection): bool
+    public function createKey(string $key, $value, $connection = null): bool
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         $serializable = SerializerFactory::createFromValue($value);
 
         $model = $this->getConfiguredModel($connection);
@@ -126,8 +142,12 @@ class Settings
      * @param string $connection
      * @return bool
      */
-    public function updateKey(string $key, $value, string $connection): bool
+    public function updateKey(string $key, $value, $connection = null): bool
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         $serializable = SerializerFactory::createFromValue($value);
 
         $model = $this->getConfiguredModel($connection);
@@ -156,8 +176,12 @@ class Settings
      * @param string $connection
      * @return null
      */
-    public function getKey(string $key, string $connection)
+    public function getKey(string $key, $connection = null)
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         $model = $this->getConfiguredModel($connection);
         $data = $model->where('key', $key)->first();
 
@@ -206,8 +230,12 @@ class Settings
      * @param string $connection
      * @return SettingsModel
      */
-    public function getConfiguredModel(string $connection): SettingsModel
+    public function getConfiguredModel($connection = null): SettingsModel
     {
+        if (is_null($connection)) {
+            $connection = $this->getDefaultConnection();
+        }
+
         $model = new SettingsModel;
         $model->setConnection(config("settings.{$connection}_connection"));
         $model->setTable(config('settings.table_name'));
