@@ -34,7 +34,7 @@ return [
     | This must be the same for the system and the tenants.
     |
     */
-    'table_name' => 'mysettings',
+    'table_name' => 'settings',
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     |
     | Any known types will be encrypted by default using Laravel's encrypt()
     | function. For this to work Laravel encryption should be configured.
-    | @see https://laravel.com/docs/5.1/encryption#configuration
+    | @see https://laravel.com/docs/master/encryption#configuration
     |
     | List of known types: integer, double, string, boolean, and array.
     |
