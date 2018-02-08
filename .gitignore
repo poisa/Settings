@@ -3,4 +3,5 @@ coverage/
 
 vendor/
 
+# Don't include composer.lock when developing libraries
 composer.lock
