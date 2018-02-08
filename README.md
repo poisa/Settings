@@ -58,7 +58,7 @@ $value = Settings::getKey('key');
 
 Just like in any other key-value store, `Settings::setKey()` expects a string key as the first parameter and the value to store as the second.
 
-When running ia multi-tenant system (like in scenario #2 described above), Settings provide the following shortcuts:
+When running in a multi-tenant system (like in scenario #2 described above), Settings provides the following shortcuts:
 
 ```php
 <?php
@@ -107,3 +107,145 @@ $eloquentModel = Settings::getConfiguredModel();
 // Using custom connection name
 $eloquentModel = Settings::getConfiguredModel('mysql');
 ```
+
+# Known data types
+
+By default, Settings can store the following types:
+
+* String
+* Boolean
+* Double
+* Integer
+* Null
+* Array
+
+This means that Settings will store and retrieve the exact data types that you give it:
+
+```php
+<?php
+Settings::setKey('key', 123);
+var_dump(Settings::getKey('key') === 123);   // bool(true)
+var_dump(Settings::getKey('key') === '123'); // bool(false)
+
+Settings::setKey('key', null);
+var_dump(Settings::getKey('key') === null); // bool(true)
+var_dump(Settings::getKey('key') === '');   // bool(false)
+```
+
+# Custom data types
+
+Storing simple types might not be enough in all cases. You can also teach Settings to work with your custom data types. For example, let's say you have a class that you use to store user preferences. Let's just use a very minimalist class with no getters/setters and validation of any kind for the sake of brevity:
+
+```php
+<?php
+
+class UserPreferences
+{
+    public $backgroundColor;
+    public $themeName;
+}
+```
+
+What would it take so that we could do something like this?
+
+```php
+<?php
+use UserPreferences;
+use Settings;
+
+$prefs = new UserPreferences;
+$prefs->backgroundColor = '#3226D6';
+$prefs->themeName = 'simple';
+Settings::setKey('userPrefs', $prefs);
+
+// and then...
+
+$prefs = Settings::getKey('userPrefs');
+var_dump(get_class($prefs) == UserPreferences::class); // bool(true)
+```
+
+If you do this, you will get an exception `Poisa\Settings\Exceptions\UnknownDataType` with the message `No serializable registered to work with UserPreferences`. This means that we need to create and register a new Serializer so that Settings can know how to work with this class. 
+
+The first step in creating a Serializer is to have our class implement `Poisa\Settings\Serializers\Serializer`. This will require us to implement all its methods.
+
+> Note: All the methods in the Serializer interface have been thoroughly documented in the source code. For the sake of brevity, all the method comments have been stripped in the following example.
+
+Now our class looks like this:
+
+```php
+<?php
+
+use Poisa\Settings\Serializers\Serializer;
+
+class UserPreferences implements Serializer
+{
+    public $backgroundColor;
+    public $themeName;
+
+    public function getTypes(): array
+    {
+        // Return the name of the data type (aka class) that this serializer knows how to serialize. If this serializer
+        // is generic in nature and know how to serialize multiple classes then you can return an array with multiple
+        // values.
+        return [UserPreferences::class];
+    }
+
+    public function getTypeAlias(): string
+    {
+        // This is how the data type is described in the database. You could easily return the same as getType() and
+        // it would work fine, except that you will want to decouple your class names from your database as much as
+        // possible. If you return the name of the class here and in the future you rename your class to something
+        // else, then you'd need to rename all the settings in the database to whatever your class is now named.
+        // If you just return a simple string with something representative of what the value is instead of the class
+        // name, then renaming the class will incur in no extra work.
+        return 'user-preferences';
+    }
+
+    public function shouldEncryptData(): bool
+    {
+        // Yes, we want Settings to encrypt our data at rest.
+        return true;
+    }
+
+    public function serialize($data): string
+    {
+        // $data is the instance of UserPreferences we want to serialize.
+        // Return a simple string that we can save in the database.
+        return json_encode([
+            'backgroundColor' => $data->backgroundColor,
+            'themeName'       => $data->themeName
+        ]);
+    }
+
+    public function unserialize($data)
+    {
+        // Take the string we stored with serialize() and reverse the process.
+        $decodedData = json_decode($data);
+        $prefs = new UserPreferences;
+        $prefs->backgroundColor = $decodedData->backgroundColor;
+        $prefs->themeName = $decodedData->themeName;
+        return $prefs;
+    }
+}
+```
+
+The last step is to register the new serializer class. For this edit the `config/settings.php` file and add the new serializer to the `serializers` key:
+
+```php
+    'serializers' => [
+        Poisa\Settings\Serializers\ScalarString::class,
+        Poisa\Settings\Serializers\ScalarBoolean::class,
+        Poisa\Settings\Serializers\ScalarDouble::class,
+        Poisa\Settings\Serializers\ScalarInteger::class,
+        Poisa\Settings\Serializers\ScalarNull::class,
+        Poisa\Settings\Serializers\ArrayType::class,
+        UserPreferences::class,
+    ],
+```
+
+That's it. Settings now knows how to store and retrieve UserPreferences!
+
+# Events
+
+(TODO)
+
