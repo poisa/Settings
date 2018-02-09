@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1518110696">
-  <project timestamp="1518110696">
+<coverage generated="1518200709">
+  <project timestamp="1518200709">
+    <package name="Poisa\Settings\Commands">
+      <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Commands/GetCommand.php">
+        <class name="Poisa\Settings\Commands\GetCommand" namespace="Poisa\Settings\Commands">
+          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+        </class>
+        <line num="21" type="method" name="handle" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+      </file>
+      <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Commands/SetCommand.php">
+        <class name="Poisa\Settings\Commands\SetCommand" namespace="Poisa\Settings\Commands">
+          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+        </class>
+        <line num="22" type="method" name="handle" visibility="public" complexity="2" crap="6" count="0"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+      </file>
+    </package>
     <package name="Poisa\Settings\Events">
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Events/SettingCreated.php">
         <class name="Poisa\Settings\Events\SettingCreated" namespace="Poisa\Settings\Events">
@@ -183,12 +208,12 @@
       </file>
     </package>
     <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Serializers/Serializer.php">
-      <metrics loc="16" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      <metrics loc="45" ncloc="16" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
     <package name="Poisa\Settings">
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Settings.php">
         <class name="Poisa\Settings\Settings" namespace="Poisa\Settings">
-          <metrics complexity="28" methods="13" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="68" coveredstatements="68" elements="81" coveredelements="81"/>
+          <metrics complexity="28" methods="13" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="69" coveredstatements="69" elements="82" coveredelements="82"/>
         </class>
         <line num="21" type="method" name="getSystemKey" visibility="public" complexity="1" crap="1" count="12"/>
         <line num="23" type="stmt" count="12"/>
@@ -229,67 +254,71 @@
         <line num="131" type="stmt" count="5"/>
         <line num="132" type="stmt" count="5"/>
         <line num="135" type="stmt" count="5"/>
-        <line num="145" type="method" name="updateKey" visibility="public" complexity="4" crap="4" count="2"/>
-        <line num="147" type="stmt" count="2"/>
-        <line num="148" type="stmt" count="2"/>
-        <line num="151" type="stmt" count="2"/>
-        <line num="153" type="stmt" count="2"/>
-        <line num="154" type="stmt" count="2"/>
-        <line num="156" type="stmt" count="2"/>
-        <line num="158" type="stmt" count="2"/>
-        <line num="159" type="stmt" count="1"/>
-        <line num="161" type="stmt" count="1"/>
-        <line num="164" type="stmt" count="2"/>
-        <line num="166" type="stmt" count="2"/>
-        <line num="167" type="stmt" count="2"/>
-        <line num="170" type="stmt" count="2"/>
-        <line num="179" type="method" name="getKey" visibility="public" complexity="5" crap="5" count="38"/>
-        <line num="181" type="stmt" count="38"/>
-        <line num="182" type="stmt" count="12"/>
-        <line num="185" type="stmt" count="38"/>
+        <line num="145" type="method" name="updateKey" visibility="public" complexity="4" crap="4" count="3"/>
+        <line num="147" type="stmt" count="3"/>
+        <line num="148" type="stmt" count="3"/>
+        <line num="151" type="stmt" count="3"/>
+        <line num="153" type="stmt" count="3"/>
+        <line num="154" type="stmt" count="3"/>
+        <line num="156" type="stmt" count="3"/>
+        <line num="157" type="stmt" count="3"/>
+        <line num="159" type="stmt" count="3"/>
+        <line num="160" type="stmt" count="2"/>
+        <line num="162" type="stmt" count="1"/>
+        <line num="165" type="stmt" count="3"/>
+        <line num="167" type="stmt" count="3"/>
+        <line num="168" type="stmt" count="3"/>
+        <line num="171" type="stmt" count="3"/>
+        <line num="180" type="method" name="getKey" visibility="public" complexity="5" crap="5" count="38"/>
+        <line num="182" type="stmt" count="38"/>
+        <line num="183" type="stmt" count="12"/>
         <line num="186" type="stmt" count="38"/>
-        <line num="188" type="stmt" count="38"/>
-        <line num="189" type="stmt" count="2"/>
-        <line num="190" type="stmt" count="1"/>
-        <line num="192" type="stmt" count="1"/>
-        <line num="195" type="stmt" count="36"/>
-        <line num="197" type="stmt" count="36"/>
-        <line num="198" type="stmt" count="18"/>
-        <line num="200" type="stmt" count="18"/>
-        <line num="203" type="stmt" count="36"/>
-        <line num="205" type="stmt" count="36"/>
-        <line num="212" type="method" name="pushSerializer" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="214" type="stmt" count="1"/>
+        <line num="187" type="stmt" count="38"/>
+        <line num="189" type="stmt" count="38"/>
+        <line num="190" type="stmt" count="2"/>
+        <line num="191" type="stmt" count="1"/>
+        <line num="193" type="stmt" count="1"/>
+        <line num="196" type="stmt" count="36"/>
+        <line num="198" type="stmt" count="36"/>
+        <line num="199" type="stmt" count="18"/>
+        <line num="201" type="stmt" count="18"/>
+        <line num="204" type="stmt" count="36"/>
+        <line num="206" type="stmt" count="36"/>
+        <line num="213" type="method" name="pushSerializer" visibility="public" complexity="1" crap="1" count="1"/>
         <line num="215" type="stmt" count="1"/>
         <line num="216" type="stmt" count="1"/>
-        <line num="223" type="method" name="getSerializers" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="225" type="stmt" count="1"/>
-        <line num="233" type="method" name="getConfiguredModel" visibility="public" complexity="2" crap="2" count="1"/>
-        <line num="235" type="stmt" count="1"/>
+        <line num="217" type="stmt" count="1"/>
+        <line num="224" type="method" name="getSerializers" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="226" type="stmt" count="1"/>
+        <line num="234" type="method" name="getConfiguredModel" visibility="public" complexity="2" crap="2" count="1"/>
         <line num="236" type="stmt" count="1"/>
-        <line num="239" type="stmt" count="1"/>
+        <line num="237" type="stmt" count="1"/>
         <line num="240" type="stmt" count="1"/>
         <line num="241" type="stmt" count="1"/>
         <line num="242" type="stmt" count="1"/>
-        <metrics loc="244" ncloc="176" classes="1" methods="13" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="68" coveredstatements="68" elements="81" coveredelements="81"/>
+        <line num="243" type="stmt" count="1"/>
+        <metrics loc="245" ncloc="177" classes="1" methods="13" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="69" coveredstatements="69" elements="82" coveredelements="82"/>
       </file>
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/SettingsServiceProvider.php">
         <class name="Poisa\Settings\SettingsServiceProvider" namespace="Poisa\Settings">
-          <metrics complexity="3" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+          <metrics complexity="4" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="13" coveredelements="13"/>
         </class>
-        <line num="15" type="method" name="boot" visibility="public" complexity="1" crap="1" count="12"/>
-        <line num="17" type="stmt" count="12"/>
+        <line num="16" type="method" name="boot" visibility="public" complexity="2" crap="2" count="12"/>
         <line num="18" type="stmt" count="12"/>
-        <line num="20" type="stmt" count="12"/>
+        <line num="19" type="stmt" count="12"/>
         <line num="21" type="stmt" count="12"/>
         <line num="22" type="stmt" count="12"/>
-        <line num="32" type="method" name="anonymousFunction:32#140" complexity="1" crap="1" count="12"/>
-        <line num="33" type="stmt" count="12"/>
-        <line num="34" type="stmt" count="12"/>
-        <line num="35" type="stmt" count="12"/>
-        <metrics loc="37" ncloc="27" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+        <line num="23" type="stmt" count="12"/>
+        <line num="25" type="stmt" count="12"/>
+        <line num="26" type="stmt" count="12"/>
+        <line num="27" type="stmt" count="12"/>
+        <line num="40" type="method" name="anonymousFunction:40#187" complexity="1" crap="1" count="12"/>
+        <line num="41" type="stmt" count="12"/>
+        <line num="42" type="stmt" count="12"/>
+        <line num="43" type="stmt" count="12"/>
+        <metrics loc="45" ncloc="35" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="13" coveredelements="13"/>
       </file>
     </package>
-    <metrics files="21" loc="684" ncloc="521" classes="10" methods="31" coveredmethods="31" conditionals="0" coveredconditionals="0" statements="123" coveredstatements="123" elements="154" coveredelements="154"/>
+    <metrics files="23" loc="786" ncloc="584" classes="12" methods="33" coveredmethods="31" conditionals="0" coveredconditionals="0" statements="136" coveredstatements="127" elements="169" coveredelements="158"/>
   </project>
 </coverage>

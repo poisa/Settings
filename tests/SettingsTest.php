@@ -281,6 +281,29 @@ class SettingsTest extends TestCase
     }
 
     /**
+     * @covers ::updateKey
+     */
+    public function testUpdateKeyAlsoUpdatesTypeAliasIfTypeHasChanged()
+    {
+        Settings::createKey('foo', 'original value');
+
+        $row = DB::connection('system')
+            ->table(config('settings.table_name'))
+            ->where('key', 'foo')
+            ->first();
+        $this->assertEquals('string', $row->type_alias);
+
+        Settings::updateKey('foo', 123);
+
+        $row = DB::connection('system')
+            ->table(config('settings.table_name'))
+            ->where('key', 'foo')
+            ->first();
+        $this->assertEquals('integer', $row->type_alias);
+
+    }
+
+    /**
      * @covers ::createKey
      */
     public function testEventSettingCreatedIsDispatched()

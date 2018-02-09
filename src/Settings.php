@@ -154,6 +154,7 @@ class Settings
         $data = $model->where('key', $key)->first();
 
         $data->setTable(config('settings.table_name'));
+        $data->type_alias = $serializable->getTypeAlias();
 
         if ($serializable->shouldEncryptData()) {
             $data->value = encrypt($serializable->serialize($value));
