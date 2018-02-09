@@ -18,6 +18,15 @@ This package really shines when you need to store odd-ball data for which you wo
 
 **Think of this package as a key-value store that knows about data types -even custom ones- that can encrypt data at rest and can also fire events.**
 
+# Index
+
+* [Installation](#installation)
+* [Use](#use)
+* [Known data types](#known-data-types)
+* [Custom data types](#custom-data-types) <-- the meat :meat_on_bone: and potatoes :fries: (and reason for creating this package)
+* [Events](#events)
+* [CLI Commands](#cli-commands)
+
 # Installation
 
 Installation can be done automatically using [Composer](https://getcomposer.org).
