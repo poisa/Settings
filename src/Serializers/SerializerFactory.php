@@ -10,7 +10,7 @@ use Poisa\Settings\Exceptions\UnknownDataType;
 class SerializerFactory
 {
     /**
-     * Given a value, detect it's type and return an instance that was registered
+     * Given a value, detect its type and return an instance that was registered
      * to serialize it.
      * @param $value
      * @return Serializer
