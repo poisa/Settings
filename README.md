@@ -238,7 +238,7 @@ class UserPreferencesSerializer implements Serializer
 }
 ```
 
-@TODO serialize() warning
+> Security note: We are serializing with json_encode/json_decode instead of using php's own serialize/unserialize functions. There is a potential security issue when using unserialize which you should be aware http://php.net/manual/en/function.unserialize.php. This might not necessarily affect you but it is importat no know about it. Having said that, you can use whatever mechanism you want as Settings does not impose one on you. As long as you return a string from the Serializer::serialize() method, that's ok.
 
 ###### Register it with Settings
 
