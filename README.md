@@ -166,9 +166,17 @@ var_dump(get_class($prefs) == UserPreferences::class); // bool(true)
 
 If you do this, you will get an exception `Poisa\Settings\Exceptions\UnknownDataType` with the message `No serializable registered to work with UserPreferences`. This means that we need to create and register a new Serializer so that Settings can know how to work with this class. 
 
-The first step in creating a Serializer is to have our class implement `Poisa\Settings\Serializers\Serializer`. This will require us to implement all its methods.
+So, to teach Settings how to work with your own data types you need to:
 
-> Note: All the methods in the Serializer interface have been thoroughly documented in the source code. For the sake of brevity, all the method comments have been stripped in the following example.
+1. Create a Serializer class.
+2. Register it with Settings.
+
+###### Create a Serializer class
+A Serializer class is just a regular class that implements the methods in the `Poisa\Settings\Serializers\Serializer` interface. It is recommended that this class be a standalone class whose sole purpose is to serialize and unserialize our own data type but in reality it can be any class, even our own data class.
+
+In this example we'll create a dedicated class. Since our data type class is called `UserPreferences`, let's call the Serializer class `UserPreferencesSerializer`. We'll put this in the root namespace but you will want to create a namespace for all your Serializer classes just to keeps things tidy.
+
+> Note: All the methods in the Serializer interface have been thoroughly documented in the source code. For the sake of brevity, all the method comments have been stripped in the following example and only comments relevant to our own implementation were left.
 
 Now our class looks like this:
 
@@ -177,7 +185,7 @@ Now our class looks like this:
 
 use Poisa\Settings\Serializers\Serializer;
 
-class UserPreferences implements Serializer
+class UserPreferencesSerializer implements Serializer
 {
     public $backgroundColor;
     public $themeName;
@@ -192,7 +200,8 @@ class UserPreferences implements Serializer
 
     public function getTypeAlias(): string
     {
-        // This is how the data type is described in the database. You could easily return the same as getType() and
+        // This string gets saved in the database so that when we unserialize the row, we know what serializer class
+        // to use to unserialize it. You could easily return the same as getType() and
         // it would work fine, except that you will want to decouple your class names from your database as much as
         // possible. If you return the name of the class here and in the future you rename your class to something
         // else, then you'd need to rename all the settings in the database to whatever your class is now named.
@@ -229,7 +238,11 @@ class UserPreferences implements Serializer
 }
 ```
 
-The last step is to register the new serializer class. For this edit the `config/settings.php` file and add the new serializer to the `serializers` key:
+@TODO serialize() warning
+
+###### Register it with Settings
+
+The last step is to register the new serializer class with the Settings package. To do this, edit `config/settings.php` and add the new serializer to the `serializers` key:
 
 ```php
     'serializers' => [
@@ -239,13 +252,71 @@ The last step is to register the new serializer class. For this edit the `config
         Poisa\Settings\Serializers\ScalarInteger::class,
         Poisa\Settings\Serializers\ScalarNull::class,
         Poisa\Settings\Serializers\ArrayType::class,
-        UserPreferences::class,
+        UserPreferencesSerializer::class,
     ],
 ```
 
 That's it. Settings now knows how to store and retrieve UserPreferences!
 
+As you can see, Settings already knows how to work with many data types. If you would like to change how Settings works with a particular data type, you'd have to de-register its Serializer and register your own.
+
+> Note: If you de-register a default data type and you try to set a key with that data type, Settings will throw an exception. 
+
 # Events
 
-(TODO)
+Settings fires different kinds of event depending on what it is doing. You can subscribe to these events to be notified when they happen. This is useful in cases where you need to know what happens in your database. Let's say you need to generate an audit trail of everything that happens in your database (every read, write, and update).
 
+You can listen for Settings events in Laravel's EventServiceProvider:
+
+```php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Poisa\Settings\Events\SettingCreated;
+use Poisa\Settings\Events\SettingRead;
+use Poisa\Settings\Events\SettingUpdated;
+
+class EventServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        parent::boot();
+
+        Event::listen(SettingCreated::class, function ($event) {
+            // $event->key;
+            // $event->value;
+            // $event->connection;
+        });
+        Event::listen(SettingUpdated::class, function ($event) {
+            // $event->key;
+            // $event->value;
+            // $event->connection;
+        });
+        Event::listen(SettingRead::class, function ($event) {
+            // $event->key;
+            // $event->value;
+            // $event->connection;
+        });
+    }
+}
+```
+
+> Note: $event-value can be anything you sent to Settings; a scalar value, array, or any kind of object Settings knows how to work with. Make sure you don't assume anything about the value before working with it. Also note that the value is always unserialized when you receive it in events.
+
+# CLI Commands
+
+Settings comes with a few comands that will help you inspect the settings table from the command line. The reason for having these commands is because looking at the database table directly will not be very useful when the data is encrypted. These commands perform the decryption for you.
+
+To list all available commands for this package you can run:
+
+    php artisan list settings
+
+Currently the following commands are available:
+
+* **settings:get**  Get a key from the database and dump it to stdout (decrypting it if necessary)
+* **settings:set**  Save a key to the database
+
+> Note: Saving a key using the CLI will only be able to store strings and numeric values. Storing other types including custom ones will only be possible via code.

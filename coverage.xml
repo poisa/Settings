@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1518200709">
-  <project timestamp="1518200709">
+<coverage generated="1518202566">
+  <project timestamp="1518202566">
     <package name="Poisa\Settings\Commands">
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Commands/GetCommand.php">
         <class name="Poisa\Settings\Commands\GetCommand" namespace="Poisa\Settings\Commands">
-          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
         </class>
-        <line num="21" type="method" name="handle" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="23" type="stmt" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="26" type="stmt" count="0"/>
-        <line num="29" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+        <line num="21" type="method" name="handle" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="23" type="stmt" count="3"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="3"/>
+        <line num="30" type="stmt" count="3"/>
+        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="6" coveredelements="6"/>
       </file>
       <file name="/Users/poisa/Sites/settings/packages/poisa/settings/src/Commands/SetCommand.php">
         <class name="Poisa\Settings\Commands\SetCommand" namespace="Poisa\Settings\Commands">
-          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+          <metrics complexity="2" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
         </class>
-        <line num="22" type="method" name="handle" visibility="public" complexity="2" crap="6" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <line num="27" type="stmt" count="0"/>
-        <line num="30" type="stmt" count="0"/>
-        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+        <line num="22" type="method" name="handle" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="30" type="stmt" count="3"/>
+        <metrics loc="32" ncloc="27" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="5" coveredelements="5"/>
       </file>
     </package>
     <package name="Poisa\Settings\Events">
@@ -319,6 +319,6 @@
         <metrics loc="45" ncloc="35" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="13" coveredelements="13"/>
       </file>
     </package>
-    <metrics files="23" loc="786" ncloc="584" classes="12" methods="33" coveredmethods="31" conditionals="0" coveredconditionals="0" statements="136" coveredstatements="127" elements="169" coveredelements="158"/>
+    <metrics files="23" loc="786" ncloc="584" classes="12" methods="33" coveredmethods="33" conditionals="0" coveredconditionals="0" statements="136" coveredstatements="136" elements="169" coveredelements="169"/>
   </project>
 </coverage>

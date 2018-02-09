@@ -3,7 +3,8 @@
 namespace Poisa\Settings;
 
 use Illuminate\Support\ServiceProvider;
-use Poisa\Settings\Serializers\ScalarInteger;
+use Poisa\Settings\Commands\GetCommand;
+use Poisa\Settings\Commands\SetCommand;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,13 @@ class SettingsServiceProvider extends ServiceProvider
         $this->publishes([$configFile => config_path('settings.php')]);
         $this->mergeConfigFrom($configFile, 'settings');
         $this->loadMigrationsFrom($migrationPath);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GetCommand::class,
+                SetCommand::class,
+            ]);
+        }
     }
 
     /**

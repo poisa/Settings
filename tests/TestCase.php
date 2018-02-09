@@ -22,8 +22,6 @@ class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
-
-
     }
 
     /**
