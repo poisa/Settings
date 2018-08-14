@@ -9,7 +9,7 @@
             "email": "julian@julianvidal.com"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=7.0.0"
     },
@@ -34,8 +34,8 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "6.5.x-dev",
-        "orchestra/testbench": "3.5.x-dev",
-        "limedeck/phpunit-detailed-printer": "dev-master"
+        "phpunit/phpunit": "~6.5",
+        "orchestra/testbench": "~3.5",
+        "limedeck/phpunit-detailed-printer": "~3.0"
     }
 }
