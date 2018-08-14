@@ -20,12 +20,18 @@ This package really shines when you need to store odd-ball data for which you wo
 
 # Index
 
+* [Release notes](#release-notes)
 * [Installation](#installation)
 * [Use](#use)
 * [Known data types](#known-data-types)
 * [Custom data types](#custom-data-types) <-- the meat :meat_on_bone: and potatoes :fries: (and reason for creating this package)
 * [Events](#events)
 * [CLI Commands](#cli-commands)
+
+# Release notes
+
+* 0.1.13 - Added config option to ignore migrations. Useful for people who want to manage the migrations themselves.
+* 0.1.12 - Initial release.
 
 # Installation
 

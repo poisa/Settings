@@ -20,7 +20,10 @@ class SettingsServiceProvider extends ServiceProvider
 
         $this->publishes([$configFile => config_path('settings.php')]);
         $this->mergeConfigFrom($configFile, 'settings');
-        $this->loadMigrationsFrom($migrationPath);
+
+        if (config('settings.automatic_migrations')) {
+            $this->loadMigrationsFrom($migrationPath);
+        }
 
         if ($this->app->runningInConsole()) {
             $this->commands([

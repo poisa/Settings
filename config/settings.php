@@ -27,6 +27,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Automatic migrations
+    |--------------------------------------------------------------------------
+    |
+    | When this is set to false and you run "artisan migrate", migrations
+    | from this package will be ignored and you will need to apply them
+    | manually. Depending on how you app is architected this disabling
+    | automatic migrations might be desirable.
+    |
+    */
+    'automatic_migrations' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Table name
     |--------------------------------------------------------------------------
     |
